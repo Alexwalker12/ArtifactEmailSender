@@ -13,21 +13,24 @@ public class ArtifactSender {
     }
     String credentialsPath;//"/Users/alexwalker/DropboxApp/ArtifactEmailSender/emailCredentials"
     String substitutionPath; //"/Users/alexwalker/DropboxApp/ArtifactEmailSender/substitutions"
-    String emailMessagePath; //"/Users/alexwalker/DropboxApp/ArtifactEmailSender/testDocumentation";
+    String emailMessagePath; //"/Users/alexwalker/DropboxApp/ArtifactEmailSender/emailMessage";
     String emailDetailsPath; //"/Users/alexwalker/DropboxApp/ArtifactEmailSender/emailDetails";
-
-
-    String from;
-
-    String recipient;
-    String subject;
-    String carbonCopyRecipient;
-
-    String completedEmail;
 
     //User Credentials
     String username;
     String password;
+    //Email Server host and port
+    String host;
+    String port;
+
+    //email HEader information
+    String from;
+    String recipient;
+    String subject;
+    String carbonCopyRecipient;
+
+    //Email body after editing
+    String completedEmail;
 
     //get the credentials for the senders email.
     Properties credentialsProps = new Properties();
@@ -36,10 +39,6 @@ public class ArtifactSender {
     //get the information about the email, e.g. Subject, Recipient, carbonCopyRecipient.
     Properties infoProps = new Properties();
     InputStream inputInfoProp;
-
-    //Email Server host and port
-    String host = "smtp-mail.outlook.com";
-    String port = "587";
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -54,10 +53,10 @@ public class ArtifactSender {
         artifactSender.setArguments(args);
         artifactSender.readCredentials();
         artifactSender.readEmailDetails();
-        artifactSender.readEmail();
+        artifactSender.editEmail();
         artifactSender.createEmail(args);
 
-        System.out.println("\n" + "Email Sent.");
+        System.out.println("Email Sent.");
     }
 
     public void setArguments(String[] args) {
@@ -100,15 +99,14 @@ public class ArtifactSender {
         } catch (MessagingException ex) {
             throw new RuntimeException(ex);
         }
-
     }
-    public void readEmail() throws FileNotFoundException {
+    public void editEmail() throws FileNotFoundException {
 
         String emailMessage = new Scanner(new File(emailMessagePath)).useDelimiter("/s").next();
         ArrayList<String> substitutions = new ArrayList<>();
 
         //Populating the ArrayList with strings from the substitutions file.
-        Scanner scanner = new Scanner(new File(substitutionPath)).useDelimiter("\\s");
+        Scanner scanner = new Scanner(new File(substitutionPath)).useDelimiter(", ");
         while (scanner.hasNext()) {
             substitutions.add(scanner.next());
         }
@@ -118,7 +116,7 @@ public class ArtifactSender {
             emailMessage = emailMessage.replace("$$" + (i+1), substitutions.get(i));
         }
         completedEmail = emailMessage;
-        System.out.print(emailMessage);
+
     }
 
     public void readEmailDetails() {
@@ -143,9 +141,37 @@ public class ArtifactSender {
 
             username = credentialsProps.getProperty("username");
             password = credentialsProps.getProperty("password");
+            host = credentialsProps.getProperty("serverHost");
+            port = credentialsProps.getProperty("portNumber");
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getCredentialsPath() {
+        return credentialsPath;
+    }
+    public String getSubstitutionPath() {
+        return substitutionPath;
+    }
+    public String getEmailMessagePath() {
+        return emailMessagePath;
+    }
+    public String getEmailDetailsPath() {
+        return emailDetailsPath;
+    }
+    public String getFrom() {
+        return from;
+    }
+    public String getRecipient() {
+        return recipient;
+    }
+    public String getSubject() {
+        return subject;
+    }
+    public String getCarbonCopyRecipient() {
+        return carbonCopyRecipient;
     }
 
 }
