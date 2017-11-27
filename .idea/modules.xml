@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ArtifactEmailSender.iml" filepath="$PROJECT_DIR$/ArtifactEmailSender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ArtifactEmailSender.iml" filepath="$PROJECT_DIR$/.idea/modules/ArtifactEmailSender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ArtifactEmailSender_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ArtifactEmailSender_main.iml" group="commandline" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ArtifactEmailSender_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ArtifactEmailSender_test.iml" group="commandline" />
     </modules>
   </component>
 </project>
