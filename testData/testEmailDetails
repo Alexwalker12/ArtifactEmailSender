@@ -1,0 +1,4 @@
+Recipient: testemail@test.com
+Subject: This is a test subject from the emailDetails file.
+CC: steve@stevemail.com
+From: 123qwerty@test.com

@@ -51,9 +51,6 @@ public class ArtifactSender {
 
 
         artifactSender.setArguments(args);
-        artifactSender.readCredentials();
-        artifactSender.readEmailDetails();
-        artifactSender.editEmail();
         artifactSender.createEmail(args);
 
         System.out.println("Email Sent.");
@@ -64,15 +61,19 @@ public class ArtifactSender {
         emailMessagePath = args[1];
         emailDetailsPath = args[2];
         substitutionPath = args[3];
+
+        readCredentials(credentialsPath);
     }
 
-    public void createEmail(String[] args) {
+    public void createEmail(String[] args) throws FileNotFoundException {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", port);
+
+        editEmail();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             @Override
@@ -100,9 +101,11 @@ public class ArtifactSender {
             throw new RuntimeException(ex);
         }
     }
-    public void editEmail() throws FileNotFoundException {
+    public String editEmail(String emailMessageTemplate, String substitutionPath) throws FileNotFoundException {
+        readEmailDetails(emailDetailsPath);
 
-        String emailMessage = new Scanner(new File(emailMessagePath)).useDelimiter("/s").next();
+        String emailMessage = emailMessageTemplate;
+
         ArrayList<String> substitutions = new ArrayList<>();
 
         //Populating the ArrayList with strings from the substitutions file.
@@ -115,11 +118,15 @@ public class ArtifactSender {
         for (int i = 0; i < substitutions.size(); i++ ) {
             emailMessage = emailMessage.replace("$$" + (i+1), substitutions.get(i));
         }
-        completedEmail = emailMessage;
-
+        return emailMessage;
     }
 
-    public void readEmailDetails() {
+    public void editEmail()  throws FileNotFoundException {
+        String emailMessageTemplatte =  new Scanner(new File(emailMessagePath)).useDelimiter("/s").next();
+        completedEmail = editEmail(emailMessageTemplatte, substitutionPath);
+    }
+
+    public void readEmailDetails(String emailDetailsPath) {
 
         try {
             inputInfoProp = new FileInputStream(emailDetailsPath);
@@ -134,7 +141,7 @@ public class ArtifactSender {
         }
     }
 
-    public void readCredentials() {
+    public void readCredentials(String credentialsPath) {
         try {
             inputProp = new FileInputStream(credentialsPath);
             credentialsProps.load(inputProp);
@@ -172,6 +179,21 @@ public class ArtifactSender {
     }
     public String getCarbonCopyRecipient() {
         return carbonCopyRecipient;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public String getHost() {
+        return host;
+    }
+    public String getPort() {
+        return port;
+    }
+    public String getCompletedEmail() {
+        return completedEmail;
     }
 
 }
