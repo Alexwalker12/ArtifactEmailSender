@@ -30,10 +30,11 @@ class ArtifactSenderTest {
     void editEmail() throws FileNotFoundException {
         System.out.println("editEmail is being Tested.");
         String testString = "$$1";
-        String testsubs = "testSub";
+        String testsubs = "/Users/alexwalker/DropboxApp/ArtifactEmailSender/testData/testSubs";
         String expectedString = "TestVar1";
+        testObject.emailDetailsPath = "/Users/alexwalker/DropboxApp/ArtifactEmailSender/testData/TestEmailDetails";
         String actualString = testObject.editEmail(testString, testsubs);
-
+        assertEquals(expectedString, actualString);
     }
 
     @Test

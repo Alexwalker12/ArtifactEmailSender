@@ -73,7 +73,7 @@ public class ArtifactSender {
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", port);
 
-        editEmail();
+        readEmail();
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             @Override
@@ -121,9 +121,9 @@ public class ArtifactSender {
         return emailMessage;
     }
 
-    public void editEmail()  throws FileNotFoundException {
-        String emailMessageTemplatte =  new Scanner(new File(emailMessagePath)).useDelimiter("/s").next();
-        completedEmail = editEmail(emailMessageTemplatte, substitutionPath);
+    public void readEmail()  throws FileNotFoundException {
+        String emailMessageTemplate =  new Scanner(new File(emailMessagePath)).useDelimiter("/s").next();
+        completedEmail = editEmail(emailMessageTemplate, substitutionPath);
     }
 
     public void readEmailDetails(String emailDetailsPath) {
